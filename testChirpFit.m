@@ -11,7 +11,7 @@ classdef testChirpFit < matlab.unittest.TestCase
 %   You only need to run the testCase = testChirpFit once until you clear
 %   all, after editing and saving any file, you only need to run
 %   res=run(testCase) to run the unit tests.
-%   
+%   () 
     
     properties
         Name    % Test name
