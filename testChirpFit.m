@@ -121,7 +121,7 @@ classdef testChirpFit < matlab.unittest.TestCase
          step = 2*rr/P; beta = -rr:step:rr-step;
          
          %---- Comment the below if not using the plot on the loop--------
-         testCase.fig = testCase.fig+1; figure(testCase.fig)
+         %testCase.fig = testCase.fig+1; figure(testCase.fig)
          %----------------------------------------------------------------
          idx = winSize/2;
          pause on
@@ -129,12 +129,16 @@ classdef testChirpFit < matlab.unittest.TestCase
              Y =  testCase.TS(:,idx:idx+winSize-1);
              
              % ------------- Visualize the analysis window ---------------
-             plot(Y(1,:));drawnow; pause(1/25);
+             %plot(Y(1,:));drawnow; pause(1/25);
              % -----------------------------------------------------------
 
              % ----------process each window with the TDCH--------------------------
              for j = 1 : testCase.numPhases
-                 [XT(:,:,i)] = TDCH(Y(1,:),beta,nn,winSize,P);
+%                 [XT(:,:,i)] = TDCH(Y(1,:),beta,nn,winSize,P);
+
+                % -- Marcelo: testing my Hilbert based detector, the output
+                % is the index for the respective rocof step location
+                 [XT(:,:,i)] = HT_test(Y(1,:));
                  
                  % later on, we need to find out what the instantanious
                  % frequency and chirp rate at the center of each window
@@ -167,7 +171,9 @@ classdef testChirpFit < matlab.unittest.TestCase
             testCase.F0 = 50;
             testCase.t0 = 0; % beginning of the time series
             testCase.Fs =4800;
+            % ---- MBM DEBUG - value was 1.0 before
             testCase.SettlingTime = 1.0;
+            % ---- END DEBUG
             testCase.sizeMax = testCase.Fs * 10;
             testCase.AnalysisCycles = 6;
             
@@ -178,7 +184,7 @@ classdef testChirpFit < matlab.unittest.TestCase
             testCase.SignalParams(Xm,:) = 1;
             testCase.SignalParams(Fin,:) = 45;
             testCase.SignalParams(Ps,:) = 0;
-            testCase.SignalParams(Rf,:) = 1;
+            testCase.SignalParams(Rf,:) = -1;
         end    
  
     end
